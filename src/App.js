@@ -1,9 +1,9 @@
-import MainMenu from './pages/main';
+import Main from './main';
 
 function App() {
   return (
     <div>
-      <MainMenu />
+      <Main />
     </div>
   );
 }

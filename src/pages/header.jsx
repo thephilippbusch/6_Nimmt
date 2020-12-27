@@ -7,14 +7,15 @@ const HeaderContainer = styled.div`
     justify-content: space-between;
     align-items: center;
     height: 8vh;
-    background: rgb(100, 30, 200);
+    background-color: #424e96;
 
     .titleContainer {
         margin-left: 40px;
+        display: flex;
+        align-items: baseline;
 
-        .titleText {
-            color: white;
-            font-family: Times New Roman;
+        .titlePicture {
+            height: 7vh;
         }
     }
 
@@ -43,7 +44,8 @@ const Header = () => {
     return(
         <HeaderContainer>
             <div className="titleContainer">
-                <h1 className="titleText">6 Nimmt!</h1>
+                {/*<h1 className="titleText">6 Nimmt!</h1>*/}
+                <img className="titlePicture" src="logo_text.png" alt="6 Nimmt Logo"/>
             </div>
 
             <div className="navbarContainer">
