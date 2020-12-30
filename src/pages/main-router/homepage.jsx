@@ -1,11 +1,11 @@
 import React, {useState} from 'react';
 import styled from 'styled-components';
-import GameButton from '../components/gameButton';
-import Header from './header';
+import GameButton from '../../components/gameButton';
+import { useHistory } from 'react-router-dom';
 
 const MainMenuContainer = styled.div`
     width: 100%;
-    height: 100vh;
+    height: 92vh;
     
     .contentContainer {
         display: flex;
@@ -36,18 +36,15 @@ const MainMenuContainer = styled.div`
 
 const HomePage = () => {
     const [count, setCount] = useState(0);
+    const history = useHistory();
 
     return(
         <MainMenuContainer>
-            <Header />
-
             <div className="contentContainer">
                 <div className="buttonDiv">
-                    <GameButton title={"Continue"} func={() => setCount(count + 1)}/>
-                    <GameButton title={"New Game"} func={() => setCount(0)}/>
-                    <GameButton title={"Load Game"} />
-                    <GameButton title={"Switch Profile"} />
-                    <GameButton title={"Exit"} />
+                    <GameButton title={"Continue"} func={() => history.push('/game')}/>    
+                    <GameButton title={"New Game"} func={() => history.push('/newgame')}/>
+                    <GameButton title={"Load Game"} func={() => history.push('/loadgame')}/>
                 </div>
 
                 <div className="titleScreen">

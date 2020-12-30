@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
-import GameButton from '../components/gameButton';
+import { useHistory, Link, BrowserRouter as Router, Route, Switch } from 'react-router-dom'
+import { checkUser } from '../../func/user';
 
 const LoginContainer = styled.div`
     width: 100%;
@@ -72,32 +73,51 @@ const LoginContainer = styled.div`
                 background-color: #424e96;
             }
         }
+
+        .error {
+            font-size: 15px;
+            color: red;
+        }
     }
 `;
 
 const LoginPage = () => {
-    const [username, setUsername] = useState(null);
-    const [email, setEmail] = useState(null);
+    const [email, setEmail] = useState("");
+    const [password, setPassword] = useState("");
+    const [error, setError] = useState("");
+    
+    const handleLogin = () => {
+        if(email !== "" && password !== "") {
+            checkUser(email, password);
+            setError("");
+        } else {
+            setError("Please enter your Email and Password!");
+        }
+
+        setEmail("");
+        setPassword("");
+    }
 
     return(
         <LoginContainer>
-            <form className="loginForm" action="">
+            <div className="loginForm">
                 <div className="loginHeader">
                     <h1 className="loginTitle">Sign In!</h1>
-                    <p className="loginSubtitle">Haven't signed up yet? <a href="https://www.google.com">click here</a>!</p>
+                    <p className="loginSubtitle">Haven't signed up yet? <a href="/signup">click here</a>!</p>
                 </div>
                 <div className="inputDiv">
-                    <p className="inputTitle">User Name:</p>
-                    <input className="inputField" type="input" placeholder="somebody@example.com..."/>
+                    <p className="inputTitle">Email:</p>
+                    <input className="inputField" type="email" id="email" value={email} onChange={e => {setEmail(e.target.value)}} placeholder="somebody@example.com..."/>
                 </div>
                 <div className="inputDiv">
-                    <p className="inputTitle">E-mail:</p>
-                    <input className="inputField" type="input" placeholder="Jane Doe..."/>
+                    <p className="inputTitle">Password:</p>
+                    <input className="inputField" type="password" id="password" value={password} onChange={e => {setPassword(e.target.value)}}/>
                 </div>
-                <button className="submitButton">
-                    Submit
+                <p className="error">{error}</p>
+                <button className="submitButton" onClick={() => handleLogin()}>
+                    Log in!
                 </button>
-            </form>
+            </div>
         </LoginContainer>
     )
 }
