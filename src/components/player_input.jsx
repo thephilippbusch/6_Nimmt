@@ -41,6 +41,7 @@ const ReadyButton = styled.button`
     border-radius: 20px;
     height: 25px;
     width: 140px;
+    cursor: pointer;
 `;
 
 const NotReadyButton = styled.button`
@@ -49,10 +50,17 @@ const NotReadyButton = styled.button`
     border-radius: 20px;
     height: 25px;
     width: 140px;
+    cursor: pointer;
+
+    :disabled {
+        background-color: rgba(120, 120, 120, 0.4);
+        cursor: default;
+    }
 `;
 
 const PlayerInput = (props) => {
     const [cards, setCards] = useState(props.cards);
+    const [selectedCard, setSelectedCard] = useState(props.cards[0]);
     const [score, setScore] = useState(props.score);
     const [ready, setReady] = useState(false);
     const rows = [1, 2, 3, 4];
@@ -68,13 +76,6 @@ const PlayerInput = (props) => {
         return(options);
     }
 
-    useEffect(() => {
-        props.fetch({
-            playernr: props.playernr,
-            score: score,
-            ready: ready
-        });
-    })
 
     const toggleReadyButton = () => {
         ready ? (
@@ -82,18 +83,33 @@ const PlayerInput = (props) => {
         ) : (
             setReady(true)
         );
+
+        props.fetch({
+            username: props.username,
+            playernr: props.playernr,
+            cards: cards,
+            selectedCard: parseInt(selectedCard),
+            score: score,
+            ready: !ready
+        });
     }
 
     return (
         <PlayerInputContainer>
             <p className="title">Player {props.playernr}: {props.username}</p>
-            <select className="cardSelect" disabled={ready}>{cards.map(card => {
-                return(
-                    <option key={card} value={card}>
-                        {card}
-                    </option>
-                )
-            })}</select>
+            <select 
+                className="cardSelect" 
+                disabled={ready}
+                onChange={e => setSelectedCard(e.target.value)}
+            >
+                {cards.map(card => {
+                    return(
+                        <option key={card} value={card}>
+                            {card}
+                        </option>
+                    )
+                })}
+            </select>
             <select className="cardSelect" disabled={ready}>{rows.map(row => {
                 return(
                     <option key={row} value={row}>
@@ -104,7 +120,7 @@ const PlayerInput = (props) => {
             <div className="splitter">
                 <p className="score">{score}</p>
                 {ready ? (
-                    <NotReadyButton onClick={() => toggleReadyButton()}>Not Ready!</NotReadyButton>
+                    <NotReadyButton disabled={props.roundOver} onClick={() => toggleReadyButton()}>Not Ready!</NotReadyButton>
                 ) : (
                     <ReadyButton onClick={() => toggleReadyButton()}>Ready!</ReadyButton>
                 )}
